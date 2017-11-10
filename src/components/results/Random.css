@@ -1,13 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
+
 html, body, .root{
   margin: 0 auto;
   height: 100%;
 }
 
+.full-random-container {
+  width: 100%;
+  padding-top: 25px;
+}
+
 .random-container {
   display: flex;
   flex-direction: column;
+  box-shadow: 10px 0px 10px -6px #01579B;
+  border: 1px solid black;
+  border-top: none;
+
   /*justify-content: center;
   align-content: center;
   text-align: center;*/
@@ -43,6 +53,12 @@ input {
   flex-direction: column;
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 .form-container{
 /*  margin: 5px;
   flex-direction: column;
@@ -50,6 +66,8 @@ input {
   max-width: 200px;*/
   border: 2px solid black;
   border-radius: 5px;
+  margin-bottom: 5px;
+  box-shadow: 10px 10px 10px -5px #01579B;
 }
 
 .random-container .random-container-output {
@@ -58,7 +76,7 @@ input {
   /*WebkitTransition: all; // note the capital W here
   msTransition: all; // ms is the only lowercase vendor prefix*/
   height: 500px;
-  width: 75%;
+  width: 100%;
   overflow: hidden;
   background-repeat: no-repeat;
   background-position: center;
@@ -67,8 +85,9 @@ input {
   flex-direction: column;
   justify-content: space-between;
 
-  box-shadow: 1px 1px 2px #01579B;
+  box-shadow: 10px 10px 10px -5px #01579B;
   visibility:hidden;
+
 }
 
 .random-container-output .business-title {
@@ -86,7 +105,6 @@ input {
   color: white;
   text-shadow: 1px 1px 2px #01579B;
 }
-
 
 .business-map {
   width: 10%;
@@ -112,3 +130,64 @@ input {
     0px 2px 4px 0px rgba(0, 0, 0, 0.4);
   border : 1px solid gray;
 }
+
+.tabs {
+  display: flex;
+  width: 100%;
+/*  height: 30px;*/
+  margin: 0 5px 0 0;
+  height:45px;
+  /*overflow:visible;*/
+}
+
+.tab {
+  display: flex;
+  font-size: 20px;
+  font-family: 'Permanent Marker', sans-serif;
+  color: black;
+  padding: 15px 0px 7px 15px;
+  display: inline;
+  border: solid;
+  border-width: 1px 1px 0px 1px;
+
+  width:100%;
+  height:45px;
+  /*overflow:hidden;*/
+  float:left;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.tab-box {
+  display: flex;
+  color: black;
+  height:50px;
+}
+
+.tab.active {
+  display: flex;
+  z-index: -10;
+  position:relative;
+  padding-bottom: 0px;
+  border-bottom: none !important;
+  width: 100%;
+}
+
+.tab.active1 {
+  display: flex;
+  z-index: 10;
+  position:relative;
+  padding-bottom: 0px;
+  border-bottom: none !important;
+  box-shadow: 10px 0 10px -6px #01579B;
+  width: 100%;
+}
+
+.inactive {
+  background-color: #5E5E5D;
+}
+
+
+
+
+

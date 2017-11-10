@@ -123,6 +123,8 @@ export default class Search extends Component {
           <img className="image"src={ this.state.data[i].image_url } />
           <div id="info-div">
             <p className="business-name">{ this.state.data[i].name }</p>
+            <p className="business-rating">{ this.state.data[i].rating }</p>
+            <p className="business-price">{ this.state.data[i].price }</p>
             <p className="open-closed">{ this.state.data[i].is_closed ? 'closed' : 'open' }</p>
             <p className="business-name"><a href="tel:{ this.state.data[i].display_phone }">{ this.state.data[i].display_phone }</a></p>
             <p className="address">{ this.state.data[i].location.display_address }</p>
@@ -154,12 +156,14 @@ shuffle(a) {
         <div className="input-area">
 
         <div>
-        <div className='searchTypeLinks test9'>
-          <ul className='searchTypeLinksList'>
-            <li className='listItem' id='selected'><NavLink className='links searchLink' to='/Search'>Search</NavLink></li>
-            <li className='listItem'><NavLink className='links randomLink' to='/Random'>Don't Even Care!</NavLink></li>
-          </ul>
-        </div>
+        <div className='searchTypeLinks'>
+           <ul className='tabs'>
+            <li className='tab active1'>Search</li>
+            <li className='tab inactive'><NavLink className='tab-box' to='/Random'>Don't Even Care!</NavLink></li>
+           </ul>
+         </div>
+
+         <div className='random-container'>
           <h1 className="header">What are you craving?</h1>
           <div className="form-container">
             <div id="another-div">
@@ -178,6 +182,7 @@ shuffle(a) {
               <input id='submit-cravings' type="submit" value="Submit" />
             </form>
           </div>
+        </div>
         </div>
         </div>
 

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
 import Header from '../common/Header';
 import Search from '../results/Search';
-// import './Random.css';
+
 
 
 import './Random.css'
@@ -121,7 +121,7 @@ export default class Random extends Component {
     var randomOutputContainer = {};
     if (business) {
       location = (business.location) ? this.formatAddress(business.location): '';
-      isOpened = business.is_closed ? <span>Closed</span> : <span>Opened</span>;
+      isOpened = business.is_closed ? <span>Closed</span> : <span>Open</span>;
       categories = this.formatCategories(business);
 
       phonenum = (business.phone)?this.formatPhoneNumber(business.phone):'';
@@ -138,40 +138,47 @@ export default class Random extends Component {
     } // end of if
 
     return (
-      <div className='random-container'>
-        <div className='searchTypeLinks test9'>
-          <ul className='searchTypeLinksList'>
-            <li className='listItem'><NavLink className='links searchLink' to='/Search'>Search</NavLink></li>
-            <li className='listItem' id='selectedRandom'><NavLink className='links randomLink' to='/Random'>Don't Even Care!</NavLink></li>
-          </ul>
-        </div>
-        <h1 className="header">Dont even care?</h1>
-        <div className="form-container">
-          <input type='text' placeholder='City and State OR Zipcode' ref='locationseed'
-                  onKeyDown={(e) => {if(e.keyCode === 13) this.handleRandom(e)}}/>
-          <input type='button' id='submit-roll-dice' value='Roll The Dice' onClick={this.handleRandom}/>
-        </div>
-        <div className="random-container-output" style={randomOutputContainer}>
+      <div className = 'full-random-container'>
 
-          <div className="business-title">
-            <a href={business.url} target="_blank" title={business.name}><h1>{business.name}</h1></a>
-            <div>
-              <h3>{business.price}</h3>
-              <h3>{business.rating}</h3>
+        <div className='searchTypeLinks'>
+           <ul className='tabs'>
+            <li className='tab inactive'><NavLink className='tab-box' to='/Search'>Search</NavLink></li>
+            <li className='tab active'>Don't Even Care!</li>
+           </ul>
+         </div>
+        <div className='random-container'>
+
+          <h1 className="header">Dont even care?</h1>
+          <div className="form-container">
+            <input type='text' placeholder='City & State OR Zipcode' ref='locationseed'
+                    onKeyDown={(e) => {if(e.keyCode === 13) this.handleRandom(e)}}/>
+            <input type='button' id='submit-roll-dice' value='Roll The Dice' onClick={this.handleRandom}/>
+          </div>
+          <div className="random-container-output" style={randomOutputContainer}>
+
+            <div className="business-title">
+              <a href={business.url} target="_blank" title={business.name}><h1>{business.name}</h1></a>
+              <div>
+                <h3>{business.price}</h3>
+                <h3>{business.rating}</h3>
+              </div>
+            </div>
+            <div className="business-map" onClick={this.toggleMap}>
+              <div>🗺</div>
+              {this.state.isMapHidden && <img id="static-map" src={staticMapSrc} alt={business.name} /> }
+            </div>
+            <div className="business-title">
+              <p>{categories}</p>
+              <p>{location}</p>
+              <p><a href="tel:{phonenum}">{phonenum}</a></p>
+              <p>{isOpened}</p>
             </div>
           </div>
-          <div className="business-map" onClick={this.toggleMap}>
-            <div>🗺</div>
-            {this.state.isMapHidden && <img id="static-map" src={staticMapSrc} alt={business.name} /> }
-          </div>
-          <div className="business-title">
-            <p>{categories}</p>
-            <p>{location}</p>
-            <p><a href="tel:{phonenum}">{phonenum}</a></p>
-            <p>{isOpened}</p>
-
-          </div>
         </div>
+
+
+
+
       </div>
     ) // end of return
   } // end of render()
