@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './reset.css';
-import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
+//import './reset.css';
+import { NavLink } from 'react-router-dom';
 import './Search.css';
 import axios from 'axios';
 
@@ -15,31 +15,20 @@ export default class Search extends Component {
       data:[],
       myCity: null
     };
-
-    this.access = {
-      client_id: '3-N_879q6D3M6P3s3KplCA',
-      client_secret: 'KqyZ9kAqWo6VUCyRfUau0fWCTyJpPpicNj2e7y69emmTosk4yqJHGrcyDX1UZ5vW',
-      access_token: "zhu9COybkCTwEVuw-DQGBnJPx0mUdbtEEG9H-_5ouY6m-yZkcVxQjzkv1D0jXO0gkcSlq6_SS5okYRpJo9ZTy2dBPBW1uR_Ffm6YstSPMvsddTXUtzc66DQnhoIAWnYx",
-      expires_in: 637498157,
-      token_type: "Bearer"
-    }
-
-    this.stuff= null;
-
-    this.prepData = this.prepData.bind(this);
     this.prepareQuery = this.prepareQuery.bind(this);
     this.axiosRequest = this.axiosRequest.bind(this);
     this.updateArray = this.updateArray.bind(this);
     this.makeMyObject = this.makeMyObject.bind(this);
   }
-
   handleChange(i, event) {
      let value = this.state.value.slice();
      value[i] = event.target.value;
      this.setState({value});
 
+  }
 
   addClick(){
+    //adds or limits how many fields you can have
     if (this.state.count < 3) {
       this.setState({count: this.state.count+1})
     }
@@ -47,8 +36,8 @@ export default class Search extends Component {
       alert('You can only have up to three fields.')
     }
   }
-
   removeClick(i){
+    //remvoes input fields
      let value = this.state.value.slice();
      value.splice(i,1);
      if (this.state.count > 1) {
@@ -61,8 +50,8 @@ export default class Search extends Component {
       alert("You must have at least one search field.");
     }
   }
-
   createUI(){
+    //makes the actual input components
      let inputFields = [];
      for(let i = 0; i < this.state.count; i++){
        inputFields.push(
@@ -73,87 +62,83 @@ export default class Search extends Component {
      }
      return inputFields || null;
   }
-
-  axiosRequest(foodTerm) {
-    let limit = 3;
-    let url = `https://yelpprox.herokuapp.com/search?term=${ foodTerm }&limit=${ limit }&location=${ this.state.myCity }`;
-
-    axios.get(url)
-    .then((response) => {
-      this.prepData(response);
-    }).catch(e => e);
+  updateArray(e) {
+    //called onBlur of an input field, adds that value to our inputs array
+    this.state.inputs.push(e.target.value);
   }
-
   prepareQuery(e) {
+    //for each input field, we keep track of them on the state, this method sends an axios request for each of those items
     e.preventDefault();
 
     for (let i of this.state.inputs) {
       this.axiosRequest(i);
     }
-
+    //after the search, set the data and inputs to blank, so the user can search again without stacking the searches
     this.setState({
       inputs: [],
       data: []
     })
   }
+  axiosRequest(foodTerm) {
+    let limit = 3; //set search limit to 3 for yelp API endpoint
+    let url = `https://yelpprox.herokuapp.com/search?term=${ foodTerm }&limit=${ limit }&location=${ this.state.myCity }`;
 
-  updateArray(e) {
-    this.state.inputs.push(e.target.value);
+    axios.get(url)
+    .then((response) => {
+      this.makeMyObject(response.data.businesses); //sends data to makeMyObj, which saves the data to our state
+    }).catch(e => e);
   }
-
-  prepData(data) {
-    this.makeMyObject(data.data.businesses);
-  }
-
   makeMyObject(businesses) {
-
+    //for each business data object found, save it to our state
+    //and change hasSearched to true (toggles the view)
     for(let i of businesses){
       this.setState({
         hasSearched: true,
         data: this.state.data.concat([i])
       })
     }
+    console.log(this.state.data);
   }
-
   makeMyChild(){
+    //goes through saved API data and creates appendable HTML elements
     let resultDivs = [];
     for(let i = 0; i < this.state.data.length ; i++) {
+      let currentItem = this.state.data[i];
       resultDivs.push(
         <div id='result-container' key={ i }>
           <img className="image"src={ this.state.data[i].image_url } />
           <div id="info-div">
+
             <p className="business-name">{ this.state.data[i].name }</p>
             <p className="business-rating">{ this.state.data[i].rating }</p>
             <p className="business-price">{ this.state.data[i].price }</p>
             <p className="open-closed">{ this.state.data[i].is_closed ? 'closed' : 'open' }</p>
             <p className="business-name"><a href="tel:{ this.state.data[i].display_phone }">{ this.state.data[i].display_phone }</a></p>
             <p className="address">{ this.state.data[i].location.display_address }</p>
+
           </div>
         </div>
       )
     }
-
+    //shuffles the array of all data, returns only the first 3 to provide a more random/dice like experience
     let rand = this.shuffle(resultDivs);
     resultDivs = rand.slice(0,3);
-
     return resultDivs || null;
-}
-
-shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+  }
+  shuffle(arr) {
+    //shuffles arr in place
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-
-    return a;
-}
-
-
+    return arr;
+  }
   render() {
     let display;
     let resultsDisplay;
-      display = (
+      display = ( //set sthe initial display with test form. Sending a call back to a child component was giving us CORS issues with the http request, hence all the code on this section
         <div className="input-area">
+
 
         <div>
         <div className='searchTypeLinks'>
@@ -164,6 +149,7 @@ shuffle(a) {
          </div>
 
          <div className='random-container'>
+
           <h1 className="header">What are you craving?</h1>
           <div className="form-container">
             <div id="another-div">
@@ -183,8 +169,10 @@ shuffle(a) {
             </form>
           </div>
         </div>
+
         </div>
         </div>
+
 
         )
 
