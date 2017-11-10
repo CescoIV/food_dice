@@ -32,10 +32,7 @@ export default class Header extends Component {
     return (
       <div className="navbar">
         <h1 className='navbar-brand'>Food<div class="roll-dice"></div>Dice</h1>
-        <div className='links'>
-          <a href="/Search">Search</a>
-          <a href="/Random">Dont Even Care!</a>
-        </div>
+
         <LogoutButton>Log out</LogoutButton>
 
 
