@@ -24,7 +24,9 @@ export default class Search extends Component {
      let value = this.state.value.slice();
      value[i] = event.target.value;
      this.setState({value});
+
   }
+
   addClick(){
     //adds or limits how many fields you can have
     if (this.state.count < 3) {
@@ -106,10 +108,14 @@ export default class Search extends Component {
         <div id='result-container' key={ i }>
           <img className="image"src={ this.state.data[i].image_url } />
           <div id="info-div">
-            <a href={currentItem.url} className="business-name">{ currentItem.name }</a><p className="business-name">{currentItem.price}</p>
-            <p className="open-closed">{ currentItem.is_closed ? 'closed' : 'open' }</p><p className="business-name">{currentItem.rating}</p>
-            <p className="business-name"><a href="tel:{ currentItem.display_phone }">{currentItem.display_phone }</a></p>
-            <p className="address">{ currentItem.location.display_address }</p>
+
+            <p className="business-name">{ this.state.data[i].name }</p>
+            <p className="business-rating">{ this.state.data[i].rating }</p>
+            <p className="business-price">{ this.state.data[i].price }</p>
+            <p className="open-closed">{ this.state.data[i].is_closed ? 'closed' : 'open' }</p>
+            <p className="business-name"><a href="tel:{ this.state.data[i].display_phone }">{ this.state.data[i].display_phone }</a></p>
+            <p className="address">{ this.state.data[i].location.display_address }</p>
+
           </div>
         </div>
       )
@@ -132,6 +138,18 @@ export default class Search extends Component {
     let resultsDisplay;
       display = ( //set sthe initial display with test form. Sending a call back to a child component was giving us CORS issues with the http request, hence all the code on this section
         <div className="input-area">
+
+
+        <div>
+        <div className='searchTypeLinks'>
+           <ul className='tabs'>
+            <li className='tab active1'>Search</li>
+            <li className='tab inactive'><NavLink className='tab-box' to='/Random'>Don't Even Care!</NavLink></li>
+           </ul>
+         </div>
+
+         <div className='random-container'>
+
           <h1 className="header">What are you craving?</h1>
           <div className="form-container">
             <div id="another-div">
@@ -151,6 +169,10 @@ export default class Search extends Component {
             </form>
           </div>
         </div>
+
+        </div>
+        </div>
+
 
         )
 
