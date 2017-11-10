@@ -63,6 +63,8 @@ export default class Random extends Component {
     return address
   } // end of formatAddress()
 
+
+
   //Returns a string representation of a business' categories
   formatCategories(business){
     var categories = '';

@@ -37,7 +37,7 @@ export default class Search extends Component {
      let value = this.state.value.slice();
      value[i] = event.target.value;
      this.setState({value});
-  }
+
 
   addClick(){
     if (this.state.count < 3) {
